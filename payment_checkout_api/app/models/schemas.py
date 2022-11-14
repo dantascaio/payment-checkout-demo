@@ -25,6 +25,10 @@ class PaymentCreate(PaymentCreateConsumer):
     authorization_timestamp: datetime.datetime = datetime.datetime.now()
 
 
+class PaymentDelete(BaseModel):
+    payment_id: int
+
+
 class Payment(PaymentBase):
     status_code: int
     status: str = 'Created'

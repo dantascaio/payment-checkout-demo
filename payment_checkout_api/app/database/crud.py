@@ -37,6 +37,16 @@ def update_payment(db: Session, payment: schemas.PaymentUpdateStatus):
     db.refresh(obj)
     return obj
 
+
+def delete_payment(db: Session, payment: schemas.PaymentUpdateStatus):
+    obj = db.query(models.Payment).filter(
+        models.Payment.payment_id == payment.payment_id).first()
+    if obj is not None:
+        db.delete(obj)
+        db.commit()
+    else:
+        pass
+
 # def get_user(db: Session, user_id: int):
 #     return db.query(models.User).filter(models.User.id == user_id).first()
 

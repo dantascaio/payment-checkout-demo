@@ -37,12 +37,12 @@ def get_db():
         db.close()
 
 
-@app.get("/payments", response_model=list[schemas.Payment])
+@app.get("/payments", response_model=list[schemas.Payment], description='List all payments')
 def list_users(db: Session = Depends(get_db)):
     return crud.get_payments(db=db)
 
 
-@app.post("/payments", response_model=schemas.Payment)
+@app.post("/payment", response_model=schemas.Payment, description='Create new Payment', status_code=201)
 def create_payment(payment: schemas.PaymentCreateConsumer, db: Session = Depends(get_db)):
     input = schemas.PaymentCreate(
         card_number=payment.card_number, payer_name=payment.payer_name, payment_value=payment.payment_value, zip_code=payment.zip_code)
@@ -52,11 +52,18 @@ def create_payment(payment: schemas.PaymentCreateConsumer, db: Session = Depends
     return new_payment
 
 
-@app.patch("/payments", response_model=schemas.Payment)
-def create_payment(payment: schemas.PaymentUpdateStatus, db: Session = Depends(get_db)):
+@app.patch("/payment", response_model=schemas.Payment, description='Update payment status')
+def update_payment(payment: schemas.PaymentUpdateStatus, db: Session = Depends(get_db)):
     updated_payment = crud.update_payment(
         db=db, payment=payment)
     return updated_payment
+
+
+@app.delete("/payments", response_model=schemas.Payment, description='Delete payment', )
+def delete_payment(payment: schemas.PaymentDelete, db: Session = Depends(get_db)):
+    updated_payment = crud.delete_payment(
+        db=db, payment=payment)
+    return None
 
 # @app.post("/users", response_model=schemas.User)
 # def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
