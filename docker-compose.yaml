@@ -31,7 +31,7 @@ services:
       - db
   # user_profile:
   #   build:
-  #     context: ./webApp/user-profile/
+  #     context: ./webApp/payment-web/
   #     dockerfile: Dockerfile
   #   ports:
   #     - 4200:4200
