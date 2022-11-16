@@ -29,9 +29,6 @@ app.add_middleware(
 )
 
 
-# webhook
-# https://fiapcom.webhook.office.com/webhookb2/8cf1d42e-933f-4b80-9131-bb37825418c5@11dbbfe2-89b8-4549-be10-cec364e59551/IncomingWebhook/3981c10a9ad24a1d8fe9d2a40fb5e26d/8bc263ea-bde7-4fd5-bc37-a8c0fb3b34d1
-
 # Dependency
 def get_db():
     db = SessionLocal()
