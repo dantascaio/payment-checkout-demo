@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CadastroService, IAllPayments, INewPayment } from './cadastro.service';
 import { FormGroup, Validators } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
-import { Observable, Subscriber } from 'rxjs';
 
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-cadastro',
   templateUrl: './cadastro.component.html',
