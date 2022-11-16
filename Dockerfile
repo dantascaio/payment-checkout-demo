@@ -34,9 +34,11 @@ RUN pip install --no-cache-dir --upgrade pip && \
     # Install the application and all its related packages using the copied Wheel file
     pip install --no-cache-dir -e . 
 
-
 # Set the working directory for the container
 WORKDIR ${PROJECT_PATH}
+
+# Run unit tests
+RUN pytest tests
 
 # Expose port 8000 to communicate with outside resources
 EXPOSE 8000

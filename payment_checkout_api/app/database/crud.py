@@ -32,7 +32,8 @@ def create_payment(db: Session, payment: schemas.PaymentCreate):
 def update_payment(db: Session, payment: schemas.PaymentUpdateStatus):
     obj = db.query(models.Payment).filter(
         models.Payment.payment_id == payment.payment_id).first()
-    obj.status_code = payment.new_status_code
+    obj.status_code = payment.new_status_code.value
+    obj.status = schemas.Status(payment.new_status_code).name
     db.commit()
     db.refresh(obj)
     return obj

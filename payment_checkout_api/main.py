@@ -4,9 +4,10 @@ from sqlalchemy.orm import Session
 import uvicorn
 
 
-from app.database import crud, models
-from app.models import schemas
-from app.database.database import SessionLocal, engine
+from payment_checkout_api.app.database import crud, models
+from payment_checkout_api.app.models import schemas
+from payment_checkout_api.app.database.database import SessionLocal, engine
+from payment_checkout_api.app.services.webhook import Webhook
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -44,11 +45,9 @@ def list_users(db: Session = Depends(get_db)):
 
 @app.post("/payment", response_model=schemas.Payment, description='Create new Payment', status_code=201)
 def create_payment(payment: schemas.PaymentCreateConsumer, db: Session = Depends(get_db)):
-    input = schemas.PaymentCreate(
-        card_number=payment.card_number, payer_name=payment.payer_name, payment_value=payment.payment_value, zip_code=payment.zip_code)
+    input = schemas.PaymentCreate(**payment.dict())
     new_payment = crud.create_payment(
         db=db, payment=input)
-    print(f'Tipo do timestamp: {type(new_payment.authorization_timestamp)}')
     return new_payment
 
 
@@ -56,6 +55,8 @@ def create_payment(payment: schemas.PaymentCreateConsumer, db: Session = Depends
 def update_payment(payment: schemas.PaymentUpdateStatus, db: Session = Depends(get_db)):
     updated_payment = crud.update_payment(
         db=db, payment=payment)
+    webhook = Webhook()
+    webhook.notify_msteams(payment)
     return updated_payment
 
 

@@ -1,6 +1,13 @@
 
 import datetime
+from enum import Enum
 from pydantic import BaseModel, Field
+
+
+class Status(int, Enum):
+    Created = 1
+    Processing = 2
+    Finished = 3
 
 
 class PaymentBase(BaseModel):
@@ -12,7 +19,7 @@ class PaymentBase(BaseModel):
 
 class PaymentUpdateStatus(BaseModel):
     payment_id: int
-    new_status_code: int
+    new_status_code: Status
 
 
 class PaymentCreateConsumer(PaymentBase):
@@ -20,8 +27,8 @@ class PaymentCreateConsumer(PaymentBase):
 
 
 class PaymentCreate(PaymentCreateConsumer):
-    status_code: int = 1
-    status: str = 'Created'
+    status_code: Status = 1
+    status: str = Status(status_code).name
     authorization_timestamp: datetime.datetime = datetime.datetime.now()
 
 
@@ -30,59 +37,10 @@ class PaymentDelete(BaseModel):
 
 
 class Payment(PaymentBase):
-    status_code: int
+    status_code: Status
     status: str = 'Created'
     payment_id: int
     authorization_timestamp: datetime.datetime
 
     class Config:
         orm_mode = True
-
-
-# class ImageBase(BaseModel):
-#     base64: str
-
-
-# class ImageCreate(ImageBase):
-#     pass
-
-
-# class ImageCreate2(BaseModel):
-#     base64: bytes
-
-
-# class Image(ImageBase):
-#     id: int
-#     user_id: int
-
-#     class Config:
-#         orm_mode = True
-
-# payment_id = Column(Integer, primary_key=True, index=True)
-# payer_name = Column(
-#     String(100),
-#     # unique=True,
-#     index=True,
-# )
-# card_number = Column(Integer)
-# payment_value = Column(Integer)
-# status_code = Column(Integer)
-# status = Column(
-#     String(30)
-# )
-# authorization_timestamp = Column(TIMESTAMP)
-
-# class UserBase(BaseModel):
-#     name: str
-
-
-# class UserCreate(UserBase):
-#     images: list[ImageCreate] = []
-
-
-# class User(UserBase):
-#     id: int
-#     images: list[Image] = []
-
-#     class Config:
-#         orm_mode = True
