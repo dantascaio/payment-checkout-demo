@@ -4,9 +4,10 @@ from sqlalchemy.orm import Session
 import uvicorn
 
 
-from app.database import crud, models
-from app.models import schemas
-from app.database.database import SessionLocal, engine
+from payment_checkout_api.app.database import crud, models
+from payment_checkout_api.app.models import schemas
+from payment_checkout_api.app.database.database import SessionLocal, engine
+from payment_checkout_api.app.services.webhook import Webhook
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -28,6 +29,9 @@ app.add_middleware(
 )
 
 
+# webhook
+# https://fiapcom.webhook.office.com/webhookb2/8cf1d42e-933f-4b80-9131-bb37825418c5@11dbbfe2-89b8-4549-be10-cec364e59551/IncomingWebhook/3981c10a9ad24a1d8fe9d2a40fb5e26d/8bc263ea-bde7-4fd5-bc37-a8c0fb3b34d1
+
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -44,11 +48,9 @@ def list_users(db: Session = Depends(get_db)):
 
 @app.post("/payment", response_model=schemas.Payment, description='Create new Payment', status_code=201)
 def create_payment(payment: schemas.PaymentCreateConsumer, db: Session = Depends(get_db)):
-    input = schemas.PaymentCreate(
-        card_number=payment.card_number, payer_name=payment.payer_name, payment_value=payment.payment_value, zip_code=payment.zip_code)
+    input = schemas.PaymentCreate(**payment.dict())
     new_payment = crud.create_payment(
         db=db, payment=input)
-    print(f'Tipo do timestamp: {type(new_payment.authorization_timestamp)}')
     return new_payment
 
 
@@ -56,6 +58,8 @@ def create_payment(payment: schemas.PaymentCreateConsumer, db: Session = Depends
 def update_payment(payment: schemas.PaymentUpdateStatus, db: Session = Depends(get_db)):
     updated_payment = crud.update_payment(
         db=db, payment=payment)
+    webhook = Webhook()
+    webhook.notify_msteams(payment)
     return updated_payment
 
 
