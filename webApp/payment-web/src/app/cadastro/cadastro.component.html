@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <p-accordion>
   <p-accordionTab header="Cadastrar novo pagamento">
     <form [formGroup]="form">
@@ -24,7 +25,7 @@
         <br>
         <div class="p-col-4">
           <button pButton type="button" [attr.aria-label]="'Criar novo pagamento'" label="Cadastrar Novo Pagamento"
-            [disabled]="!form.valid" (click)="InputUsuario()"></button>
+            [disabled]="!form.valid" (click)="inputUsuario()"></button>
         </div>
       </div>
     </form>
@@ -38,6 +39,9 @@
           <th>Nome</th>
           <th>Valor do pagamento</th>
           <th>CEP</th>
+          <th>Status</th>
+          <th>Processa</th>
+          <th>Finaliza</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-user let-expanded="expanded">
@@ -46,6 +50,15 @@
           <td>{{ user.payer_name }}</td>
           <td>{{ user.payment_value }}</td>
           <td>{{ user.zip_code }}</td>
+          <td>{{ user.status_code}} - {{ user.status }}</td>
+          <td>
+            <button pButton pRipple type="button" icon="pi pi-sync" class="p-button-rounded p-button-text p-button-info"
+              (click)="alteraPagamento(user, 2)" pTooltip="Processar Pagamento"></button>
+          </td>
+          <td>
+            <button pButton pRipple type="button" icon="pi pi-check" class="p-button-rounded p-button-text p-button-info"
+              (click)="alteraPagamento(user, 3)" pTooltip="Processar Pagamento"></button>
+          </td>
         </tr>
       </ng-template>
     </p-table>

@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CadastroComponent } from './cadastro/cadastro.component';
-
+import {DropdownModule} from 'primeng/dropdown';
 import { PanelModule } from 'primeng/panel';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
@@ -41,7 +41,8 @@ import {AccordionModule} from 'primeng/accordion';
     InputNumberModule,
     FileUploadModule,
     TooltipModule,
-    AccordionModule
+    AccordionModule,
+    DropdownModule
 
 
   ],

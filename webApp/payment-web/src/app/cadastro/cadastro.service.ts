@@ -40,26 +40,30 @@ export class CadastroService {
     );
   }
 
-  // listaUsuarioPorId(
-  //   id: number
-  // ): Observable<IAllUsers> {
-  //   return this.http.post<IAllUsers>(
-  //     `${this.pathUrlBase}/users`,
-  //     { id }
-  //   );
-  // }
 
 
 
   cadastrarUsuario(
     newPayment: INewPayment
   ): Observable<IAllPayments> {
-    console.log(newPayment)
     return this.http.post<IAllPayments>(
       `${this.pathUrlBase}/payment`,
       { ...newPayment }
     );
   }
+
+  updatePagamento(
+    payment_id: number,
+    new_status_code: number
+  ): Observable<IAllPayments> {
+    console.log(payment_id)
+    return this.http.patch<IAllPayments>(
+      `${this.pathUrlBase}/payment`,
+      { payment_id, new_status_code }
+    );
+  }
+
+
 
 }
 
