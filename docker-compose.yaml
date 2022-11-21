@@ -32,15 +32,15 @@ services:
       - 8000:8000
     depends_on:
       - db
-  # user_profile:
-  #   build:
-  #     context: ./webApp/payment-web/
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 4200:4200
-  #   depends_on:
-  #     - db
-  #     - payment_checkout_api
+  user_profile:
+    build:
+      context: ./webApp/payment-web/
+      dockerfile: Dockerfile 
+    ports:
+      - 4200:4200
+    depends_on:
+      - db
+      - payment_checkout_api
   # Names our volume
 volumes:
   my-db:

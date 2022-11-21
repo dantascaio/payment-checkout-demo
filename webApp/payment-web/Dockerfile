@@ -15,7 +15,7 @@ WORKDIR /usr/src/app
 ENV VERSAO=${versao}
 
 LABEL \
-    org.label-schema.maintainer="Diogo Raul" \
+    org.label-schema.maintainer="Diogo Martins" \
     org.label-schema.name="" \
     org.label-schema.license="MIT" \
     org.label-schema.version="$versao" \
@@ -30,7 +30,7 @@ COPY README.md LICENSE Dockerfile ${BOM_PATH}/
 COPY . .
 
 # Upgrade pip to the most recent version
-RUN npm install
+RUN npm install --legacy-peer-dep
 
 # Expose port 8000 to communicate with outside resources
 EXPOSE 4200
